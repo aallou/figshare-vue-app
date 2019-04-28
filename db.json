@@ -1,0 +1,194 @@
+{
+    "articles": [
+        {
+            "defined_type_name": "dataset",
+            "doi": "10.6084/m9.figshare.8032250.v1",
+            "handle": "",
+            "thumb": "",
+            "title": "Additional file 2: of TCF21 and AP-1 interact through epigenetic modifications to regulate coronary artery disease gene expression",
+            "url": "https://api.figshare.com/v2/articles/8032250",
+            "timeline": {
+                "posted": "2019-05-02T05:00:00"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8032250",
+            "defined_type": 3,
+            "url_public_html": "https://figshare.com/articles/Additional_file_2_of_TCF21_and_AP-1_interact_through_epigenetic_modifications_to_regulate_coronary_artery_disease_gene_expression/8032250",
+            "published_date": "2019-05-02T05:00:00Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8032250",
+            "group_id": 7348,
+            "id": 8032250,
+            "url_private_html": "https://figshare.com/account/articles/8032250"
+        },
+        {
+            "defined_type_name": "dataset",
+            "doi": "10.6084/m9.figshare.8032268.v1",
+            "handle": "",
+            "thumb": "",
+            "title": "Additional file 4: of TCF21 and AP-1 interact through epigenetic modifications to regulate coronary artery disease gene expression",
+            "url": "https://api.figshare.com/v2/articles/8032268",
+            "timeline": {
+                "posted": "2019-05-02T05:00:00"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8032268",
+            "defined_type": 3,
+            "url_public_html": "https://figshare.com/articles/Additional_file_4_of_TCF21_and_AP-1_interact_through_epigenetic_modifications_to_regulate_coronary_artery_disease_gene_expression/8032268",
+            "published_date": "2019-05-02T05:00:00Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8032268",
+            "group_id": 7348,
+            "id": 8032268,
+            "url_private_html": "https://figshare.com/account/articles/8032268"
+        },
+        {
+            "defined_type_name": "dataset",
+            "doi": "10.6084/m9.figshare.8032259.v1",
+            "handle": "",
+            "thumb": "",
+            "title": "Additional file 3: of TCF21 and AP-1 interact through epigenetic modifications to regulate coronary artery disease gene expression",
+            "url": "https://api.figshare.com/v2/articles/8032259",
+            "timeline": {
+                "posted": "2019-05-02T05:00:00"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8032259",
+            "defined_type": 3,
+            "url_public_html": "https://figshare.com/articles/Additional_file_3_of_TCF21_and_AP-1_interact_through_epigenetic_modifications_to_regulate_coronary_artery_disease_gene_expression/8032259",
+            "published_date": "2019-05-02T05:00:00Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8032259",
+            "group_id": 7348,
+            "id": 8032259,
+            "url_private_html": "https://figshare.com/account/articles/8032259"
+        },
+        {
+            "defined_type_name": "dataset",
+            "doi": "10.6084/m9.figshare.8032277.v1",
+            "handle": "",
+            "thumb": "",
+            "title": "Additional file 5: of TCF21 and AP-1 interact through epigenetic modifications to regulate coronary artery disease gene expression",
+            "url": "https://api.figshare.com/v2/articles/8032277",
+            "timeline": {
+                "posted": "2019-05-02T05:00:00"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8032277",
+            "defined_type": 3,
+            "url_public_html": "https://figshare.com/articles/Additional_file_5_of_TCF21_and_AP-1_interact_through_epigenetic_modifications_to_regulate_coronary_artery_disease_gene_expression/8032277",
+            "published_date": "2019-05-02T05:00:00Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8032277",
+            "group_id": 7348,
+            "id": 8032277,
+            "url_private_html": "https://figshare.com/account/articles/8032277"
+        },
+        {
+            "defined_type_name": "journal contribution",
+            "doi": "10.6084/m9.figshare.8032241.v1",
+            "handle": "",
+            "thumb": "https://s3-eu-west-1.amazonaws.com/ppreviews-npg-489897889/14962139/thumb.png",
+            "title": "Additional file 1: of TCF21 and AP-1 interact through epigenetic modifications to regulate coronary artery disease gene expression",
+            "url": "https://api.figshare.com/v2/articles/8032241",
+            "timeline": {
+                "posted": "2019-05-02T05:00:00"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8032241",
+            "defined_type": 6,
+            "url_public_html": "https://figshare.com/articles/Additional_file_1_of_TCF21_and_AP-1_interact_through_epigenetic_modifications_to_regulate_coronary_artery_disease_gene_expression/8032241",
+            "published_date": "2019-05-02T05:00:00Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8032241",
+            "group_id": 7348,
+            "id": 8032241,
+            "url_private_html": "https://figshare.com/account/articles/8032241"
+        },
+        {
+            "defined_type_name": "poster",
+            "doi": "10.6084/m9.figshare.8051624.v1",
+            "handle": "",
+            "thumb": "https://s3-eu-west-1.amazonaws.com/pfigshare-u-previews/15006539/thumb.png",
+            "title": "IDF-WPR poster 2018 (Fibroscan study serials)",
+            "url": "https://api.figshare.com/v2/articles/8051624",
+            "timeline": {
+                "posted": "2019-04-28T09:30:00"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8051624",
+            "defined_type": 5,
+            "url_public_html": "https://figshare.com/articles/IDF-WPR_poster_2018_Fibroscan_study_serials_/8051624",
+            "published_date": "2019-04-28T09:30:00Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8051624",
+            "group_id": null,
+            "id": 8051624,
+            "url_private_html": "https://figshare.com/account/articles/8051624"
+        },
+        {
+            "defined_type_name": "journal contribution",
+            "doi": "10.6084/m9.figshare.8051627.v1",
+            "handle": "",
+            "thumb": "https://s3-eu-west-1.amazonaws.com/pfigshare-u-previews/15006542/thumb.png",
+            "title": "Propozycja opisu predykatywnych części mowy w języku starojapońskim",
+            "url": "https://api.figshare.com/v2/articles/8051627",
+            "timeline": {
+                "posted": "2019-04-28T09:23:08"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8051627",
+            "defined_type": 6,
+            "url_public_html": "https://figshare.com/articles/Propozycja_opisu_predykatywnych_cz_ci_mowy_w_j_zyku_starojapo_skim/8051627",
+            "published_date": "2019-04-28T09:23:08Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8051627",
+            "group_id": null,
+            "id": 8051627,
+            "url_private_html": "https://figshare.com/account/articles/8051627"
+        },
+        {
+            "defined_type_name": "poster",
+            "doi": "10.6084/m9.figshare.8051612.v1",
+            "handle": "",
+            "thumb": "https://s3-eu-west-1.amazonaws.com/pfigshare-u-previews/15006521/thumb.png",
+            "title": "ADA poster presentation 2018.pptx",
+            "url": "https://api.figshare.com/v2/articles/8051612",
+            "timeline": {
+                "posted": "2019-04-28T09:09:40"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8051612",
+            "defined_type": 5,
+            "url_public_html": "https://figshare.com/articles/ADA_poster_presentation_2018_pptx/8051612",
+            "published_date": "2019-04-28T09:09:40Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8051612",
+            "group_id": null,
+            "id": 8051612,
+            "url_private_html": "https://figshare.com/account/articles/8051612"
+        },
+        {
+            "defined_type_name": "book",
+            "doi": "10.6084/m9.figshare.8051615.v1",
+            "handle": "",
+            "thumb": "https://s3-eu-west-1.amazonaws.com/pfigshare-u-previews/15006524/thumb.png",
+            "title": "Deep Robotics and Medical Applications",
+            "url": "https://api.figshare.com/v2/articles/8051615",
+            "timeline": {
+                "posted": "2019-04-28T08:55:26"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8051615",
+            "defined_type": 13,
+            "url_public_html": "https://figshare.com/articles/Deep_Robotics_and_Medical_Applications/8051615",
+            "published_date": "2019-04-28T08:55:26Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8051615",
+            "group_id": null,
+            "id": 8051615,
+            "url_private_html": "https://figshare.com/account/articles/8051615"
+        },
+        {
+            "defined_type_name": "journal contribution",
+            "doi": "10.6084/m9.figshare.8051609.v1",
+            "handle": "",
+            "thumb": "https://s3-eu-west-1.amazonaws.com/pfigshare-u-previews/15006515/thumb.png",
+            "title": "Gramatyczne wykładniki honoryfikatywności w języku japońskim epoki Heian",
+            "url": "https://api.figshare.com/v2/articles/8051609",
+            "timeline": {
+                "posted": "2019-04-28T08:38:21"
+            },
+            "url_private_api": "https://api.figshare.com/v2/account/articles/8051609",
+            "defined_type": 6,
+            "url_public_html": "https://figshare.com/articles/Gramatyczne_wyk_adniki_honoryfikatywno_ci_w_j_zyku_japo_skim_epoki_Heian/8051609",
+            "published_date": "2019-04-28T08:38:21Z",
+            "url_public_api": "https://api.figshare.com/v2/articles/8051609",
+            "group_id": null,
+            "id": 8051609,
+            "url_private_html": "https://figshare.com/account/articles/8051609"
+        }
+    ]
+}
