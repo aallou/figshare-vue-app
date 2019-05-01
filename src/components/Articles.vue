@@ -1,30 +1,34 @@
 <template>
-  <div>
-    <h1>{{ message }}</h1>
-    <div v-for="article in articles" :key="article.id">
-      <h3>{{ article.title }}</h3>
-    </div>
-  </div>
+  <v-layout row wrap>
+    <v-flex xs12>
+      <h1>{{ message }}</h1>
+    </v-flex>
+    <Article v-for="article in articles" :key="article.id" :article="article" />
+  </v-layout>
 </template>
 
 <script>
-import FigShareService from "@/services/FigShareService";
+import { mapState } from "vuex";
+import Article from "@/components/Article.vue";
 
 export default {
+  components: { Article },
   data() {
     return {
-      message: "Hello word",
-      articles: []
+      message: "Hello world"
     };
   },
+  computed: {
+    ...mapState({ articles: state => state.ArticlesModule.articles })
+  },
   mounted() {
-    FigShareService.getArticles()
-      .then(response => {
-        this.articles = response.data;
-      })
-      .catch(error => console.log(error));
+    this.$store.dispatch("getArticles");
   }
 };
 </script>
 
-<style></style>
+<style>
+.flex {
+  margin-bottom: 10px;
+}
+</style>
