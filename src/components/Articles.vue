@@ -1,34 +1,34 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <h1>{{ message }}</h1>
+      <h1>The number of categories is {{ categories.length }}</h1>
     </v-flex>
-    <Article v-for="article in articles" :key="article.id" :article="article" />
+    <Category v-for="category in categories" :key="category.id" :category="category"/>
   </v-layout>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import Article from "@/components/Article.vue";
+import Category from "@/components/Category.vue";
 
 export default {
-  components: { Article },
+  components: { Category },
   data() {
     return {
       message: "Hello world"
     };
   },
   computed: {
-    ...mapState({ articles: state => state.ArticlesModule.articles })
+    ...mapState({ categories: state => state.ArticlesModule.categories })
   },
   mounted() {
-    this.$store.dispatch("getArticles");
+    this.$store.dispatch("getStatsByCategories", 50);
   }
 };
 </script>
 
 <style>
 .flex {
-  margin-bottom: 10px;
+  padding: 10px;
 }
 </style>
