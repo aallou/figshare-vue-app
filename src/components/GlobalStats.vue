@@ -1,41 +1,30 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
-      <h1>The number of categories is {{ categories.length }}</h1>
-    </v-flex>
-
-    <GlobalStats />
-
-    <v-data-iterator
-      :items="categories"
-      :rows-per-page-items="rowsPerPageItems"
-      :pagination.sync="pagination"
-      content-tag="v-layout"
-      row
-      wrap
-    >
-      <template v-slot:item="props">
-        <Category :category="props.item" />
-      </template>
-    </v-data-iterator>
-  </v-layout>
+  <v-flex xs12>
+    <v-card>
+      <v-card-title>
+        <h4>Global stats - Nationalities</h4>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-list dense>
+        <v-list-tile
+          v-for="nationality in globalStats"
+          :key="nationality.country"
+        >
+          <v-list-tile-content>{{ nationality.country }}:</v-list-tile-content>
+          <v-list-tile-content class="align-end">
+            {{ nationality.total }}
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-divider></v-divider>
+    </v-card>
+  </v-flex>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import Category from "@/components/Category.vue";
-import GlobalStats from "@/components/GlobalStats.vue";
 
 export default {
-  components: { Category, GlobalStats },
-  data() {
-    return {
-      rowsPerPageItems: [4, 8, 12],
-      pagination: {
-        rowsPerPage: 4
-      }
-    };
-  },
   computed: {
     ...mapState({
       categories: state => state.ArticlesModule.categories
@@ -64,15 +53,8 @@ export default {
       });
       return nationalitiesStats;
     }
-  },
-  mounted() {
-    this.$store.dispatch("getStatsByCategories", 40);
   }
 };
 </script>
 
-<style>
-.flex {
-  padding: 10px;
-}
-</style>
+<style></style>

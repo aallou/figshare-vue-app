@@ -15,6 +15,9 @@ export default {
       limit: 1000
     });
   },
+  getArticle(id) {
+    return apiClient.get("/articles/" + id);
+  },
   getCategories() {
     return apiClient.get("/categories");
   }
