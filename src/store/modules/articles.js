@@ -199,25 +199,6 @@ export default {
           category.isDetailLoaded = true;
           commit("UPDATE_CATEGORY", category);
 
-          // Top stats
-          dispatch("getArticleStats", {
-            categoryId,
-            categoryName: category.title,
-            criteria: "views"
-          });
-
-          dispatch("getArticleStats", {
-            categoryId,
-            categoryName: category.title,
-            criteria: "downloads"
-          });
-
-          dispatch("getArticleStats", {
-            categoryId,
-            categoryName: category.title,
-            criteria: "shares"
-          });
-
           // Nationalities
           articles.forEach(article => {
             dispatch("getAuthorsNationalities", {

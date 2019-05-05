@@ -193,11 +193,36 @@ export default {
       categoryId: this.$route.params.id,
       page: 1
     });
+
+    // Top stats
+    this.$store.dispatch("getArticleStats", {
+      categoryId: this.category.id,
+      categoryName: this.category.title,
+      criteria: "views"
+    });
+
+    this.$store.dispatch("getArticleStats", {
+      categoryId: this.category.id,
+      categoryName: this.category.title,
+      criteria: "downloads"
+    });
+
+    this.$store.dispatch("getArticleStats", {
+      categoryId: this.category.id,
+      categoryName: this.category.title,
+      criteria: "shares"
+    });
   },
   methods: {
     exportData() {
       let csvContent = "data:text/csv;charset=utf-8,";
       csvContent += [
+        "Top stats",
+        "Tops;Article Id;Group Id;Total",
+        ...this.category.tops.map(
+          top => `${top.criteria};${top.articleId};${top.groupId};${top.total}`
+        ),
+        "*******",
         "Article types",
         ...this.category.articleTypes.map(
           type => `${type.label};${type.nbArticles}`
