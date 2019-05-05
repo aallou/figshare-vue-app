@@ -11,7 +11,7 @@ export default {
   getArticlesByCategory(categoryName) {
     return apiClient.post("/articles/search", {
       search_for: ":category: '" + categoryName + "'",
-      published_since: "2015-05-01",
+      published_since: "2015-01-01",
       limit: 1000
     });
   },
