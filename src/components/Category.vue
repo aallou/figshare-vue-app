@@ -256,7 +256,7 @@ export default {
       const data = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", data);
-      link.setAttribute("download", "export.csv");
+      link.setAttribute("download", this.category.title + ".csv");
       link.click();
     }
   }
