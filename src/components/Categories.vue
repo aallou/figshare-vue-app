@@ -18,11 +18,14 @@
           <v-flex xs12 sm6>
             <v-card>
               <v-card-title>
-                <h4>{{ props.item.title }}</h4>&nbsp;
+                <h4>{{ props.item.title }}</h4>
+                &nbsp;
               </v-card-title>
               <v-divider></v-divider>
               <v-card-actions>
-                <router-link :to="{ name: 'category', params: { id: props.item.id } }">
+                <router-link
+                  :to="{ name: 'category', params: { id: props.item.id } }"
+                >
                   <v-btn flat color="orange">Details</v-btn>
                 </router-link>
               </v-card-actions>

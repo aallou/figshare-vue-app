@@ -56,6 +56,30 @@ export default {
         return cat.id == categoryId ? category : cat;
       });
     },
+    UDPATE_YEARS_STATS_INFO(state, { categoryId, year }) {
+      let category = state.categories.find(cat => cat.id == categoryId);
+
+      const isExist = category.articleStatsByYear.some(
+        stat => stat.year == year
+      );
+
+      if (isExist) {
+        category.articleStatsByYear = category.articleStatsByYear.map(stat => {
+          if (stat.year == year) {
+            return Object.assign({}, stat, {
+              total: stat.total + 1
+            });
+          }
+          return stat;
+        });
+      } else {
+        category.articleStatsByYear.push({ year, total: 1 });
+      }
+
+      state.categories = state.categories.map(cat => {
+        return cat.id == categoryId ? category : cat;
+      });
+    },
     UPDATE_NATIONALITIES(state, { categoryId, country }) {
       let category = state.categories.find(cat => cat.id == categoryId);
 
@@ -99,6 +123,7 @@ export default {
           );
           categories.map(category => {
             category.nbArticles = null;
+            category.isDetailLoaded = false;
             category.nationalities = [];
             category.articleTypes = ArticleUtils.getArticlesTypes();
             category.groupsStats = {};
@@ -110,6 +135,7 @@ export default {
             category.activeStats = {};
             category.activeStats.active = 0;
             category.activeStats.inactive = 0;
+            category.articleStatsByYear = [];
             return category;
           });
           commit("SET_CATEGORIES", categories);
@@ -119,8 +145,13 @@ export default {
         });
     },
     getCategoryDetails({ state, commit, dispatch }, { categoryId, page }) {
-      commit("UPDATE_PROGRESS", true);
       let category = state.categories.filter(cat => cat.id == categoryId)[0];
+
+      if (category.isDetailLoaded) {
+        return;
+      }
+      commit("UPDATE_PROGRESS", true);
+
       FigShareService.getArticlesByCategory(category.title)
         .then(response => {
           const articles = response.data;
@@ -143,8 +174,19 @@ export default {
                   })
                 : type;
             });
+
+            //published date by years
+            const publishedDate = new Date(
+              article.published_date
+            ).getFullYear();
+
+            commit("UDPATE_YEARS_STATS_INFO", {
+              categoryId,
+              year: publishedDate
+            });
           }
 
+          category.isDetailLoaded = true;
           commit("UPDATE_CATEGORY", category);
           articles.forEach(article => {
             dispatch("getAuthorsNationalities", {

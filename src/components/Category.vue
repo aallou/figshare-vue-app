@@ -24,7 +24,7 @@
     <v-flex xs4>
       <v-card>
         <v-card-title>
-          <h4>{{ category.title }}</h4>
+          <h4>Article type</h4>
           &nbsp;
           <span v-if="category.nbArticles" class="grey--text"
             >&nbsp;({{ category.nbArticles }})</span
@@ -34,9 +34,9 @@
         <v-list dense>
           <v-list-tile v-for="type in category.articleTypes" :key="type.id">
             <v-list-tile-content>{{ type.label }}:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ type.nbArticles }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              type.nbArticles
+            }}</v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -55,9 +55,9 @@
             <v-list-tile-content
               >{{ nationality.country }}:</v-list-tile-content
             >
-            <v-list-tile-content class="align-end">
-              {{ nationality.total }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              nationality.total
+            }}</v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -71,15 +71,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>With groups:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ category.groupsStats.withGroup }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              category.groupsStats.withGroup
+            }}</v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Without groups:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ category.groupsStats.withoutGroup }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              category.groupsStats.withoutGroup
+            }}</v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-card-title>
@@ -89,15 +89,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>Orcid article known:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ category.orcidStats.known }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              category.orcidStats.known
+            }}</v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Orcid article unknown:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ category.orcidStats.unknown }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              category.orcidStats.unknown
+            }}</v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-card-title>
@@ -107,15 +107,31 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>Active:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ category.activeStats.active }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              category.activeStats.active
+            }}</v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Inactive:</v-list-tile-content>
-            <v-list-tile-content class="align-end">
-              {{ category.activeStats.inactive }}
-            </v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              category.activeStats.inactive
+            }}</v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+        <v-divider></v-divider>
+        <v-card-title>
+          <h4>Stats by Year</h4>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-list dense>
+          <v-list-tile
+            v-for="stat in category.articleStatsByYear"
+            :key="stat.year"
+          >
+            <v-list-tile-content>{{ stat.year }}:</v-list-tile-content>
+            <v-list-tile-content class="align-end">{{
+              stat.total
+            }}</v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -171,7 +187,12 @@ export default {
         "*******",
         "Stats articles without orcid and actives",
         `Active;${this.category.activeStats.active}`,
-        `Inactive;${this.category.activeStats.inactive}`
+        `Inactive;${this.category.activeStats.inactive}`,
+        "*******",
+        "Stats by year",
+        ...this.category.articleStatsByYear.map(
+          stat => `${stat.year};${stat.total}`
+        )
       ]
         .join("\n")
         .replace(/(^\[)|(\]$)/gm, "");
