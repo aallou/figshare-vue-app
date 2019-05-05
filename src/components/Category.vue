@@ -14,6 +14,10 @@
             Category Details
             <span class="grey--text">&nbsp;({{ category.title }})</span>
           </v-toolbar-title>
+          <v-btn :disabled="progress" @click="exportData" color="green" dark>
+            <span>Export CSV &nbsp;</span>
+            <v-icon>move_to_inbox</v-icon>
+          </v-btn>
         </v-toolbar>
       </template>
     </v-flex>
@@ -30,9 +34,9 @@
         <v-list dense>
           <v-list-tile v-for="type in category.articleTypes" :key="type.id">
             <v-list-tile-content>{{ type.label }}:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              type.nbArticles
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ type.nbArticles }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -51,9 +55,9 @@
             <v-list-tile-content
               >{{ nationality.country }}:</v-list-tile-content
             >
-            <v-list-tile-content class="align-end">{{
-              nationality.total
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ nationality.total }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -67,15 +71,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>With groups:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.groupsStats.withGroup
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.groupsStats.withGroup }}
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Without groups:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.groupsStats.withoutGroup
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.groupsStats.withoutGroup }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-card-title>
@@ -85,15 +89,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>Orcid article known:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.orcidStats.known
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.orcidStats.known }}
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Orcid article unknown:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.orcidStats.unknown
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.orcidStats.unknown }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-card-title>
@@ -103,15 +107,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>Active:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.activeStats.active
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.activeStats.active }}
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Inactive:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.activeStats.inactive
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.activeStats.inactive }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -142,6 +146,42 @@ export default {
       categoryId: this.$route.params.id,
       page: 1
     });
+  },
+  methods: {
+    exportData() {
+      let csvContent = "data:text/csv;charset=utf-8,";
+      csvContent += [
+        "Article types",
+        ...this.category.articleTypes.map(
+          type => `${type.label};${type.nbArticles}`
+        ),
+        "*******",
+        "Nationalities",
+        ...this.category.nationalities.map(
+          nationality => `${nationality.country};${nationality.total}`
+        ),
+        "*******",
+        "Stats by group",
+        `With groups;${this.category.groupsStats.withGroup}`,
+        `Without groups;${this.category.groupsStats.withoutGroup}`,
+        "*******",
+        "Stats at least one orcid known",
+        `Orcid article known;${this.category.orcidStats.known}`,
+        `Orcid article unknown;${this.category.orcidStats.unknown}`,
+        "*******",
+        "Stats articles without orcid and actives",
+        `Active;${this.category.activeStats.active}`,
+        `Inactive;${this.category.activeStats.inactive}`
+      ]
+        .join("\n")
+        .replace(/(^\[)|(\]$)/gm, "");
+
+      const data = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", data);
+      link.setAttribute("download", "export.csv");
+      link.click();
+    }
   }
 };
 </script>
