@@ -21,6 +21,26 @@
         </v-toolbar>
       </template>
     </v-flex>
+    <v-flex xs12>
+      <v-card>
+        <v-card-title>
+          <h4>Top stats</h4>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-data-table
+          :headers="topsHeaders"
+          :items="category.tops"
+          class="elevation-1"
+        >
+          <template v-slot:items="props">
+            <td>{{ props.item.criteria }}</td>
+            <td>{{ props.item.articleId }}</td>
+            <td>{{ props.item.groupId ? props.item.groupId : "-" }}</td>
+            <td>{{ props.item.total }}</td>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-flex>
     <v-flex xs4>
       <v-card>
         <v-card-title>
@@ -34,9 +54,9 @@
         <v-list dense>
           <v-list-tile v-for="type in category.articleTypes" :key="type.id">
             <v-list-tile-content>{{ type.label }}:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              type.nbArticles
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ type.nbArticles }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -55,9 +75,9 @@
             <v-list-tile-content
               >{{ nationality.country }}:</v-list-tile-content
             >
-            <v-list-tile-content class="align-end">{{
-              nationality.total
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ nationality.total }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -71,15 +91,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>With groups:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.groupsStats.withGroup
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.groupsStats.withGroup }}
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Without groups:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.groupsStats.withoutGroup
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.groupsStats.withoutGroup }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-card-title>
@@ -89,15 +109,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>Orcid article known:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.orcidStats.known
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.orcidStats.known }}
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Orcid article unknown:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.orcidStats.unknown
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.orcidStats.unknown }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-card-title>
@@ -107,15 +127,15 @@
         <v-list dense>
           <v-list-tile>
             <v-list-tile-content>Active:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.activeStats.active
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.activeStats.active }}
+            </v-list-tile-content>
           </v-list-tile>
           <v-list-tile>
             <v-list-tile-content>Inactive:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              category.activeStats.inactive
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ category.activeStats.inactive }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
         <v-divider></v-divider>
@@ -129,9 +149,9 @@
             :key="stat.year"
           >
             <v-list-tile-content>{{ stat.year }}:</v-list-tile-content>
-            <v-list-tile-content class="align-end">{{
-              stat.total
-            }}</v-list-tile-content>
+            <v-list-tile-content class="align-end">
+              {{ stat.total }}
+            </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-card>
@@ -145,7 +165,18 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      topsHeaders: [
+        {
+          text: "Tops",
+          align: "center",
+          sortable: false,
+          value: "criteria"
+        },
+        { text: "Article Id", value: "articleId", align: "center" },
+        { text: "Group Id", value: "groupId", align: "center" },
+        { text: "Total", value: "total", align: "center" }
+      ]
     };
   },
   computed: {

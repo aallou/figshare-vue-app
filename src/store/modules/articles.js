@@ -103,6 +103,15 @@ export default {
       state.categories = state.categories.map(cat => {
         return cat.id == categoryId ? category : cat;
       });
+    },
+    UPDATE_TOPS(state, { categoryId, criteria, total, groupId, articleId }) {
+      let category = state.categories.find(cat => cat.id == categoryId);
+
+      category.tops.push({ criteria, total, groupId, articleId });
+
+      state.categories = state.categories.map(cat => {
+        return cat.id == categoryId ? category : cat;
+      });
     }
   },
   actions: {
@@ -136,6 +145,7 @@ export default {
             category.activeStats.active = 0;
             category.activeStats.inactive = 0;
             category.articleStatsByYear = [];
+            category.tops = [];
             return category;
           });
           commit("SET_CATEGORIES", categories);
@@ -152,7 +162,7 @@ export default {
       }
       commit("UPDATE_PROGRESS", true);
 
-      FigShareService.getArticlesByCategory(category.title)
+      FigShareService.getArticlesByCategory(category.title, page)
         .then(response => {
           const articles = response.data;
           category.nbArticles = category.nbArticles + articles.length;
@@ -188,6 +198,27 @@ export default {
 
           category.isDetailLoaded = true;
           commit("UPDATE_CATEGORY", category);
+
+          // Top stats
+          dispatch("getArticleStats", {
+            categoryId,
+            categoryName: category.title,
+            criteria: "views"
+          });
+
+          dispatch("getArticleStats", {
+            categoryId,
+            categoryName: category.title,
+            criteria: "downloads"
+          });
+
+          dispatch("getArticleStats", {
+            categoryId,
+            categoryName: category.title,
+            criteria: "shares"
+          });
+
+          // Nationalities
           articles.forEach(article => {
             dispatch("getAuthorsNationalities", {
               article,
@@ -248,6 +279,35 @@ export default {
               });
             }
           });
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    getArticleStats({ commit }, { categoryId, categoryName, criteria }) {
+      FigShareService.getArticleByCategoryOrderByCriteria({
+        categoryName,
+        criteria
+      })
+        .then(response => {
+          const articleId = response.data[0].id;
+          const groupId = response.data[0].group_id;
+          FigShareService.getNumberCriteria({ article: articleId, criteria })
+            .then(response => {
+              console.log("MMMM : " + response.data);
+              const total = response.data.totals;
+              console.log(total);
+              commit("UPDATE_TOPS", {
+                categoryId,
+                criteria,
+                total,
+                groupId,
+                articleId
+              });
+            })
+            .catch(error => {
+              console.log(error.response);
+            });
         })
         .catch(error => {
           console.log(error.response);
