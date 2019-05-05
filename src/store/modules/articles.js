@@ -5,9 +5,13 @@ import ArticleUtils from "@/utils/ArticleUtils.js";
 export default {
   state: {
     articles: [],
-    categories: []
+    categories: [],
+    progress: false
   },
   mutations: {
+    UPDATE_PROGRESS(state, value) {
+      state.progress = value;
+    },
     SET_ARTICLES(state, articles) {
       state.articles = articles;
     },
@@ -17,6 +21,39 @@ export default {
     UPDATE_CATEGORY(state, categoryUpdated) {
       state.categories = state.categories.map(category => {
         return category.id == categoryUpdated.id ? categoryUpdated : category;
+      });
+    },
+    UDPATE_ORCID_INFO(state, { categoryId, value }) {
+      let category = state.categories.find(cat => cat.id == categoryId);
+      if (value) {
+        category.orcidStats.known++;
+      } else {
+        category.orcidStats.unknown++;
+      }
+      state.categories = state.categories.map(cat => {
+        return cat.id == categoryId ? category : cat;
+      });
+    },
+    UDPATE_GROUP_INFO(state, { categoryId, value }) {
+      let category = state.categories.find(cat => cat.id == categoryId);
+      if (value) {
+        category.groupsStats.withGroup++;
+      } else {
+        category.groupsStats.withoutGroup++;
+      }
+      state.categories = state.categories.map(cat => {
+        return cat.id == categoryId ? category : cat;
+      });
+    },
+    UDPATE_ACTIVE_INFO(state, { categoryId, value }) {
+      let category = state.categories.find(cat => cat.id == categoryId);
+      if (value) {
+        category.activeStats.active++;
+      } else {
+        category.activeStats.inactive++;
+      }
+      state.categories = state.categories.map(cat => {
+        return cat.id == categoryId ? category : cat;
       });
     },
     UPDATE_NATIONALITIES(state, { categoryId, country }) {
@@ -49,6 +86,126 @@ export default {
       FigShareService.getArticles()
         .then(response => {
           commit("SET_ARTICLES", response.data);
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    getCategories({ commit }, filterCategoryParentId) {
+      return FigShareService.getCategories()
+        .then(async response => {
+          const categories = response.data.filter(
+            category => category.parent_id == filterCategoryParentId
+          );
+          categories.map(category => {
+            category.nbArticles = null;
+            category.nationalities = [];
+            category.articleTypes = ArticleUtils.getArticlesTypes();
+            category.groupsStats = {};
+            category.groupsStats.withGroup = 0;
+            category.groupsStats.withoutGroup = 0;
+            category.orcidStats = {};
+            category.orcidStats.known = 0;
+            category.orcidStats.unknown = 0;
+            category.activeStats = {};
+            category.activeStats.active = 0;
+            category.activeStats.inactive = 0;
+            return category;
+          });
+          commit("SET_CATEGORIES", categories);
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    getCategoryDetails({ state, commit, dispatch }, { categoryId, page }) {
+      commit("UPDATE_PROGRESS", true);
+      let category = state.categories.filter(cat => cat.id == categoryId)[0];
+      FigShareService.getArticlesByCategory(category.title)
+        .then(response => {
+          const articles = response.data;
+          category.nbArticles = category.nbArticles + articles.length;
+
+          if (articles.length == 1000) {
+            dispatch("getCategoryDetails", { categoryId, page: page + 1 });
+          } else {
+            commit("UPDATE_PROGRESS", false);
+          }
+
+          for (let article of articles) {
+            const articleType = article.defined_type;
+
+            //types
+            category.articleTypes = category.articleTypes.map(type => {
+              return type.id == articleType
+                ? Object.assign({}, type, {
+                    nbArticles: type.nbArticles + 1
+                  })
+                : type;
+            });
+          }
+
+          commit("UPDATE_CATEGORY", category);
+          articles.forEach(article => {
+            dispatch("getAuthorsNationalities", {
+              article,
+              categoryId: category.id
+            });
+          });
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    getAuthorsNationalities({ commit }, { article, categoryId }) {
+      FigShareService.getArticle(article.id)
+        .then(response => {
+          const detailArticle = response.data;
+          const articleGroup = detailArticle.group_id;
+
+          commit("UDPATE_GROUP_INFO", { categoryId, value: articleGroup });
+
+          const isArticlePublishedByOrcid = detailArticle.authors.some(
+            author => author.orcid_id
+          );
+
+          commit("UDPATE_ORCID_INFO", {
+            categoryId,
+            value: isArticlePublishedByOrcid
+          });
+
+          if (!isArticlePublishedByOrcid) {
+            const isArticlePublishedByActive = detailArticle.authors.some(
+              author => author.is_active
+            );
+
+            commit("UDPATE_ACTIVE_INFO", {
+              categoryId,
+              value: isArticlePublishedByActive
+            });
+          }
+          detailArticle.authors.forEach(author => {
+            if (author.orcid_id) {
+              OrcidService.getAuthor(author.orcid_id)
+                .then(response => {
+                  const country =
+                    response.data.person.addresses.address[0].country.value;
+                  commit("UPDATE_NATIONALITIES", { categoryId, country });
+                })
+                .catch(error => {
+                  console.log(error.response);
+                  commit("UPDATE_NATIONALITIES", {
+                    categoryId,
+                    country: "ORCID-BLOCKED"
+                  });
+                });
+            } else {
+              commit("UPDATE_NATIONALITIES", {
+                categoryId,
+                country: "UNKNOWN"
+              });
+            }
+          });
         })
         .catch(error => {
           console.log(error.response);
@@ -95,41 +252,10 @@ export default {
               .catch(error => {
                 console.log(error.response);
               });
-            i++;
           }
 
           state.categories.forEach(category => {
             console.log(category.title + "," + category.nbArticles);
-          });
-        })
-        .catch(error => {
-          console.log(error.response);
-        });
-    },
-    getAuthorsNationalities({ commit }, { article, categoryId }) {
-      FigShareService.getArticle(article.id)
-        .then(response => {
-          response.data.authors.forEach(author => {
-            if (author.orcid_id) {
-              OrcidService.getAuthor(author.orcid_id)
-                .then(response => {
-                  const country =
-                    response.data.person.addresses.address[0].country.value;
-                  commit("UPDATE_NATIONALITIES", { categoryId, country });
-                })
-                .catch(error => {
-                  console.log(error.response);
-                  commit("UPDATE_NATIONALITIES", {
-                    categoryId,
-                    country: "ORCID-BLOCKED"
-                  });
-                });
-            } else {
-              commit("UPDATE_NATIONALITIES", {
-                categoryId,
-                country: "UNKNOWN"
-              });
-            }
           });
         })
         .catch(error => {

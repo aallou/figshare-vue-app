@@ -1,33 +1,46 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <h1>The number of categories is {{ categories.length }}</h1>
+      <v-data-iterator
+        :items="categories"
+        :rows-per-page-items="rowsPerPageItems"
+        :pagination.sync="pagination"
+        content-tag="v-layout"
+        row
+        wrap
+      >
+        <template v-slot:header>
+          <v-toolbar class="mb-2" color="indigo darken-5" dark flat>
+            <v-toolbar-title>Categories</v-toolbar-title>
+          </v-toolbar>
+        </template>
+        <template v-slot:item="props">
+          <v-flex xs12 sm6>
+            <v-card>
+              <v-card-title>
+                <h4>{{ props.item.title }}</h4>&nbsp;
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <router-link :to="{ name: 'category', params: { id: props.item.id } }">
+                  <v-btn flat color="orange">Details</v-btn>
+                </router-link>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </template>
+      </v-data-iterator>
     </v-flex>
-
-    <GlobalStats />
-
-    <v-data-iterator
-      :items="categories"
-      :rows-per-page-items="rowsPerPageItems"
-      :pagination.sync="pagination"
-      content-tag="v-layout"
-      row
-      wrap
-    >
-      <template v-slot:item="props">
-        <Category :category="props.item" />
-      </template>
-    </v-data-iterator>
+    <v-flex xs12>
+      <router-view :key="$route.fullPath"></router-view>
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import Category from "@/components/Category.vue";
-import GlobalStats from "@/components/GlobalStats.vue";
 
 export default {
-  components: { Category, GlobalStats },
   data() {
     return {
       rowsPerPageItems: [4, 8, 12],
@@ -66,7 +79,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("getStatsByCategories", 40);
+    this.$store.dispatch("getCategories", 50);
   }
 };
 </script>
@@ -74,5 +87,8 @@ export default {
 <style>
 .flex {
   padding: 10px;
+}
+a {
+  text-decoration: none;
 }
 </style>
