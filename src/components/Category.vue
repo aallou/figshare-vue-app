@@ -195,6 +195,7 @@ export default {
     });
 
     // Top stats
+    /*
     this.$store.dispatch("getArticleStats", {
       categoryId: this.category.id,
       categoryName: this.category.title,
@@ -211,7 +212,7 @@ export default {
       categoryId: this.category.id,
       categoryName: this.category.title,
       criteria: "shares"
-    });
+    });*/
   },
   methods: {
     exportData() {

@@ -106,8 +106,17 @@ export default {
     },
     UPDATE_TOPS(state, { categoryId, criteria, total, groupId, articleId }) {
       let category = state.categories.find(cat => cat.id == categoryId);
+      let isExist = category.tops.some(top => top.criteria == criteria);
 
-      category.tops.push({ criteria, total, groupId, articleId });
+      if (isExist) {
+        category.tops = category.tops.map(top => {
+          return top.criteria == criteria
+            ? { criteria, total, groupId, articleId }
+            : top;
+        });
+      } else {
+        category.tops.push({ criteria, total, groupId, articleId });
+      }
 
       state.categories = state.categories.map(cat => {
         return cat.id == categoryId ? category : cat;
@@ -194,6 +203,23 @@ export default {
               categoryId,
               year: publishedDate
             });
+
+            //tops
+            dispatch("getTotalByCriteria", {
+              categoryId,
+              articleId: article.id,
+              criteria: "views"
+            });
+            dispatch("getTotalByCriteria", {
+              categoryId,
+              articleId: article.id,
+              criteria: "downloads"
+            });
+            dispatch("getTotalByCriteria", {
+              categoryId,
+              articleId: article.id,
+              criteria: "shares"
+            });
           }
 
           category.isDetailLoaded = true;
@@ -275,9 +301,7 @@ export default {
           const groupId = response.data[0].group_id;
           FigShareService.getNumberCriteria({ article: articleId, criteria })
             .then(response => {
-              console.log("MMMM : " + response.data);
               const total = response.data.totals;
-              console.log(total);
               commit("UPDATE_TOPS", {
                 categoryId,
                 criteria,
@@ -289,6 +313,26 @@ export default {
             .catch(error => {
               console.log(error.response);
             });
+        })
+        .catch(error => {
+          console.log(error.response);
+        });
+    },
+    getTotalByCriteria({ commit, state }, { categoryId, articleId, criteria }) {
+      FigShareService.getNumberCriteria({ article: articleId, criteria })
+        .then(response => {
+          let category = state.categories.find(cat => cat.id == categoryId);
+          let top = category.tops.filter(top => top.criteria == criteria);
+          const total = response.data.totals;
+
+          if (top.length == 0 || top[0].total < total) {
+            commit("UPDATE_TOPS", {
+              categoryId,
+              criteria,
+              total,
+              articleId
+            });
+          }
         })
         .catch(error => {
           console.log(error.response);
