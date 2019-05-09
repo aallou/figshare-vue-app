@@ -121,6 +121,13 @@ export default {
       state.categories = state.categories.map(cat => {
         return cat.id == categoryId ? category : cat;
       });
+    },
+    STATS(state, { categoryId, criteria, total, articleId }) {
+      let category = state.categories.find(cat => cat.id == categoryId);
+      category.stats.push({ criteria, total, articleId });
+      state.categories = state.categories.map(cat => {
+        return cat.id == categoryId ? category : cat;
+      });
     }
   },
   actions: {
@@ -155,6 +162,7 @@ export default {
             category.activeStats.inactive = 0;
             category.articleStatsByYear = [];
             category.tops = [];
+            category.stats = [];
             return category;
           });
           commit("SET_CATEGORIES", categories);
@@ -324,6 +332,8 @@ export default {
           let category = state.categories.find(cat => cat.id == categoryId);
           let top = category.tops.filter(top => top.criteria == criteria);
           const total = response.data.totals;
+
+          commit("STATS", { categoryId, criteria, total, articleId });
 
           if (top.length == 0 || top[0].total < total) {
             commit("UPDATE_TOPS", {

@@ -249,6 +249,10 @@ export default {
         "Stats by year",
         ...this.category.articleStatsByYear.map(
           stat => `${stat.year};${stat.total}`
+        ),
+        "Stats",
+        ...this.category.stats.map(
+          stat => `${stat.criteria};${stat.articleId};${stat.total}`
         )
       ]
         .join("\n")
