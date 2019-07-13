@@ -122,9 +122,9 @@ export default {
         return cat.id == categoryId ? category : cat;
       });
     },
-    STATS(state, { categoryId, criteria, total, articleId, group_id }) {
+    STATS(state, { categoryId, criteria, total, article }) {
       let category = state.categories.find(cat => cat.id == categoryId);
-      category.stats.push({ criteria, total, articleId, group_id });
+      category.stats.push({ criteria, total, article });
       state.categories = state.categories.map(cat => {
         return cat.id == categoryId ? category : cat;
       });
@@ -248,17 +248,17 @@ export default {
           //tops
           dispatch("getTotalByCriteria", {
             categoryId,
-            article : detailArticle,
+            article: detailArticle,
             criteria: "views"
           });
           dispatch("getTotalByCriteria", {
             categoryId,
-            article : detailArticle,
+            article: detailArticle,
             criteria: "downloads"
           });
           dispatch("getTotalByCriteria", {
             categoryId,
-            article : detailArticle,
+            article: detailArticle,
             criteria: "shares"
           });
 
@@ -333,7 +333,12 @@ export default {
           let top = category.tops.filter(top => top.criteria == criteria);
           const total = response.data.totals;
 
-          commit("STATS", { categoryId, criteria, total, articleId: article.id , group_id: article.group_id });
+          commit("STATS", {
+            categoryId,
+            criteria,
+            total,
+            article
+          });
 
           if (top.length == 0 || top[0].total < total) {
             commit("UPDATE_TOPS", {
