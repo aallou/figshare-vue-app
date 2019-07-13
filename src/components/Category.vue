@@ -254,9 +254,9 @@ export default {
         "Criteria;Article Id;Group Id;Published Date;Total",
         ...this.category.stats.map(
           stat =>
-            `${stat.criteria};${stat.article.articleId};
-            ${stat.article.group_id};${stat.article.published_date};
-            ${stat.total}`
+            `${stat.criteria};${stat.article.articleId};${
+              stat.article.group_id
+            };${stat.article.published_date};${stat.total}`
         )
       ]
         .join("\n")
