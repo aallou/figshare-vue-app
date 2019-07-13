@@ -122,9 +122,9 @@ export default {
         return cat.id == categoryId ? category : cat;
       });
     },
-    STATS(state, { categoryId, criteria, total, articleId }) {
+    STATS(state, { categoryId, criteria, total, articleId, group_id }) {
       let category = state.categories.find(cat => cat.id == categoryId);
-      category.stats.push({ criteria, total, articleId });
+      category.stats.push({ criteria, total, articleId, group_id });
       state.categories = state.categories.map(cat => {
         return cat.id == categoryId ? category : cat;
       });
@@ -211,23 +211,6 @@ export default {
               categoryId,
               year: publishedDate
             });
-
-            //tops
-            dispatch("getTotalByCriteria", {
-              categoryId,
-              articleId: article.id,
-              criteria: "views"
-            });
-            dispatch("getTotalByCriteria", {
-              categoryId,
-              articleId: article.id,
-              criteria: "downloads"
-            });
-            dispatch("getTotalByCriteria", {
-              categoryId,
-              articleId: article.id,
-              criteria: "shares"
-            });
           }
 
           category.isDetailLoaded = true;
@@ -245,7 +228,7 @@ export default {
           console.log(error.response);
         });
     },
-    getAuthorsNationalities({ commit }, { article, categoryId }) {
+    getAuthorsNationalities({ commit, dispatch }, { article, categoryId }) {
       FigShareService.getArticle(article.id)
         .then(response => {
           const detailArticle = response.data;
@@ -260,6 +243,23 @@ export default {
           commit("UDPATE_ORCID_INFO", {
             categoryId,
             value: isArticlePublishedByOrcid
+          });
+
+          //tops
+          dispatch("getTotalByCriteria", {
+            categoryId,
+            article : detailArticle,
+            criteria: "views"
+          });
+          dispatch("getTotalByCriteria", {
+            categoryId,
+            article : detailArticle,
+            criteria: "downloads"
+          });
+          dispatch("getTotalByCriteria", {
+            categoryId,
+            article : detailArticle,
+            criteria: "shares"
           });
 
           if (!isArticlePublishedByOrcid) {
@@ -326,21 +326,21 @@ export default {
           console.log(error.response);
         });
     },
-    getTotalByCriteria({ commit, state }, { categoryId, articleId, criteria }) {
-      FigShareService.getNumberCriteria({ article: articleId, criteria })
+    getTotalByCriteria({ commit, state }, { categoryId, article, criteria }) {
+      FigShareService.getNumberCriteria({ article: article.id, criteria })
         .then(response => {
           let category = state.categories.find(cat => cat.id == categoryId);
           let top = category.tops.filter(top => top.criteria == criteria);
           const total = response.data.totals;
 
-          commit("STATS", { categoryId, criteria, total, articleId });
+          commit("STATS", { categoryId, criteria, total, articleId: article.id , group_id: article.group_id });
 
           if (top.length == 0 || top[0].total < total) {
             commit("UPDATE_TOPS", {
               categoryId,
               criteria,
               total,
-              articleId
+              articleId: article.id
             });
           }
         })

@@ -252,7 +252,7 @@ export default {
         ),
         "Stats",
         ...this.category.stats.map(
-          stat => `${stat.criteria};${stat.articleId};${stat.total}`
+          stat => `${stat.criteria};${stat.articleId};${stat.group_id};${stat.total}`
         )
       ]
         .join("\n")
